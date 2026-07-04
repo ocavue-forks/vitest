@@ -13,6 +13,7 @@ import {
 } from 'vitest/internal/browser'
 import { Traces } from 'vitest/internal/traces'
 import { getBrowserState, getConfig, getWorkerState, moduleRunner } from '../utils'
+import { setupClipboardBridge } from './clipboard'
 import { setupDialogsSpy } from './dialog'
 import { setupConsoleLogSpy } from './logger'
 import { VitestBrowserClientMocker } from './mocker'
@@ -176,6 +177,10 @@ async function prepareTestEnvironment(options: PrepareOptions) {
     setupConsoleLogSpy()
   }
   setupDialogsSpy()
+
+  if (server.provider === 'playwright' && config.browser.name === 'webkit') {
+    setupClipboardBridge()
+  }
 
   const runner = await initiateRunner(state, mocker, config)
   getBrowserState().runner = runner

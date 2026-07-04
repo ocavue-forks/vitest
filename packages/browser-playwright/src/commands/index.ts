@@ -1,5 +1,6 @@
 import { clear } from './clear'
 import { click, dblClick, tripleClick } from './click'
+import { clipboardReadText, clipboardWriteText } from './clipboard'
 import { dragAndDrop } from './dragAndDrop'
 import { fill } from './fill'
 import { hover } from './hover'
@@ -34,6 +35,8 @@ export default {
   __vitest_fill: fill as typeof fill,
   __vitest_tab: tab as typeof tab,
   __vitest_keyboard: keyboard as typeof keyboard,
+  __vitest_clipboardReadText: clipboardReadText as typeof clipboardReadText,
+  __vitest_clipboardWriteText: clipboardWriteText as typeof clipboardWriteText,
   __vitest_selectOptions: selectOptions as typeof selectOptions,
   __vitest_dragAndDrop: dragAndDrop as typeof dragAndDrop,
   __vitest_hover: hover as typeof hover,
