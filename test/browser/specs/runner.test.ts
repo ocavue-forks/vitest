@@ -354,6 +354,9 @@ test('user-event', async () => {
     expect(stdout).toReportPassedTest('cleanup2.test.ts', browser)
     expect(stdout).toReportPassedTest('keyboard.test.ts', browser)
     expect(stdout).toReportPassedTest('clipboard.test.ts', browser)
+    if (provider.name === 'playwright' && browser === 'webkit') {
+      expect(stdout).toReportPassedTest('clipboard-text.test.ts', browser)
+    }
   })
 })
 

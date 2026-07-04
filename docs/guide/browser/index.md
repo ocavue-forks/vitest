@@ -592,6 +592,23 @@ When using Vitest Browser, it's important to note that thread blocking dialogs l
 
 In such situations, Vitest provides default mocks with default returned values for these APIs. This ensures that if the user accidentally uses synchronous popup web APIs, the execution would not hang. However, it's still recommended for the user to mock these web APIs for a better experience. Read more in [Mocking](/guide/mocking).
 
+### Clipboard Access
+
+Test code runs as regular page scripts, so `navigator.clipboard` follows the browser's normal security rules. When using the playwright provider:
+
+- Chromium rejects clipboard access unless the `clipboard-read` and `clipboard-write` permissions are granted through the provider's [`contextOptions`](/config/browser/playwright#contextoptions):
+
+```ts
+playwright({
+  contextOptions: {
+    permissions: ['clipboard-read', 'clipboard-write'],
+  },
+})
+```
+
+- Firefox allows clipboard access without any configuration.
+- WebKit only allows page scripts to access the clipboard while handling a real user gesture, and granted permissions do not lift that requirement. Vitest works around this by routing `navigator.clipboard.readText` and `navigator.clipboard.writeText` through the provider, so they work without any configuration. The `read()` and `write()` methods are not bridged and still require a user gesture.
+
 ### Spying on Module Exports
 
 Browser Mode uses the browser's native ESM support to serve modules. The module namespace object is sealed and can't be reconfigured, unlike in Node.js tests where Vitest can patch the Module Runner. This means you can't call `vi.spyOn` on an imported object:
